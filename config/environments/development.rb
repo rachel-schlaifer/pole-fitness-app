@@ -37,7 +37,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -73,4 +73,27 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+# Ensure mailer works in development
+config.action_mailer.delivery_method = :smtp
+
+# Define default URL options (required by Devise)
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+# SMTP settings for Gmail or other email provider
+my_email = ENV['MY_EMAIL']
+
+password = ENV['EMAIL_PASSWORD']
+
+
+config.action_mailer.smtp_settings = {
+  address:              'smtp.gmail.com',
+  port:                 587,
+  domain:               'yourdomain.com',
+  user_name:            my_email,
+  password:             password,          # replace with your email password
+  authentication:       'plain',
+  enable_starttls_auto: true
+}
+
 end
